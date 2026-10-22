@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta — Ressarcimento: impacto no produto · SplitHub v2.1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #F7F8FA; --sur: #FFFFFF; --sur2: #F0F2F6; --sur3: #E8EBF2; --brd: #DDE1EA;
+  --txt1: #131720; --txt2: #4A5568; --txt3: #8A92A3;
+  --teal: #0E9E8E; --teal-d: rgba(14,158,142,.1);
+  --blue: #1D5FCC; --blue-d: rgba(29,95,204,.08);
+  --red: #D63A49; --red-d: rgba(214,58,73,.08);
+  --amber: #B97A10; --amber-d: rgba(185,122,16,.08);
+  --green: #1A7940; --green-d: rgba(26,121,64,.08);
+  --purple: #6B3FA0; --purple-d: rgba(107,63,160,.08);
+  --gray: #6B7280; --gray-d: rgba(107,114,128,.08);
+  --mono: #EDF0F5;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1117; --sur: #161C25; --sur2: #1E2533; --sur3: #232C3D; --brd: #262E3F;
+    --txt1: #E4E8EF; --txt2: #8A99B4; --txt3: #4F5B73;
+    --teal: #1FBAAA; --teal-d: rgba(31,186,170,.12);
+    --blue: #4D9FFF; --blue-d: rgba(77,159,255,.1);
+    --red: #F04B5C; --red-d: rgba(240,75,92,.1);
+    --amber: #F59E0B; --amber-d: rgba(245,158,11,.1);
+    --green: #22C55E; --green-d: rgba(34,197,94,.1);
+    --purple: #A78BFA; --purple-d: rgba(167,139,250,.1);
+    --gray: #9CA3AF; --gray-d: rgba(156,163,175,.1);
+    --mono: #1A2030;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1117; --sur: #161C25; --sur2: #1E2533; --sur3: #232C3D; --brd: #262E3F;
+  --txt1: #E4E8EF; --txt2: #8A99B4; --txt3: #4F5B73;
+  --teal: #1FBAAA; --teal-d: rgba(31,186,170,.12);
+  --blue: #4D9FFF; --blue-d: rgba(77,159,255,.1);
+  --red: #F04B5C; --red-d: rgba(240,75,92,.1);
+  --amber: #F59E0B; --amber-d: rgba(245,158,11,.1);
+  --green: #22C55E; --green-d: rgba(34,197,94,.1);
+  --purple: #A78BFA; --purple-d: rgba(167,139,250,.1);
+  --gray: #9CA3AF; --gray-d: rgba(156,163,175,.1);
+  --mono: #1A2030;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--txt1); font: 14px/1.65 'Inter', system-ui, sans-serif; padding: 40px 20px 80px; }
+.doc { max-width: 940px; margin: 0 auto; }
+.back { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--txt3); text-decoration: none; margin-bottom: 28px; }
+.back:hover { color: var(--amber); }
+.eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--amber); margin-bottom: 10px; }
+h1 { font-size: 27px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; text-wrap: balance; }
+.subtitle { font-size: 14px; color: var(--txt2); margin-bottom: 24px; max-width: 680px; }
+.meta-bar { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 18px; background: var(--sur); border: 1px solid var(--brd); border-radius: 8px; margin-bottom: 20px; align-items: center; }
+.meta-pill { display: flex; align-items: center; gap: 5px; font-size: 11px; }
+.meta-label { color: var(--txt3); font-weight: 500; }
+.meta-val { color: var(--txt1); font-weight: 700; }
+.chip { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.chip.ok { background: var(--green-d); color: var(--green); }
+.chip.warn { background: var(--amber-d); color: var(--amber); }
+.chip.info { background: var(--blue-d); color: var(--blue); }
+.chip.teal { background: var(--teal-d); color: var(--teal); }
+.chip.red { background: var(--red-d); color: var(--red); }
+.chip.gray { background: var(--gray-d); color: var(--gray); }
+
+/* TOC */
+.toc { background: var(--sur); border: 1px solid var(--brd); border-radius: 8px; padding: 18px 22px; margin-bottom: 40px; }
+.toc-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--txt3); margin-bottom: 12px; }
+.toc-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; list-style: none; }
+@media (max-width: 620px) { .toc-list { grid-template-columns: 1fr; } }
+.toc-list a { font-size: 12.5px; color: var(--txt2); text-decoration: none; display: flex; gap: 8px; }
+.toc-list a:hover { color: var(--amber); }
+.toc-num { color: var(--txt3); font-family: 'JetBrains Mono', monospace; font-size: 11px; flex-shrink: 0; }
+
+.section { margin-bottom: 46px; scroll-margin-top: 20px; }
+.sec-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--brd); }
+.sec-num { font-size: 11px; font-weight: 700; color: var(--amber); background: var(--amber-d); border-radius: 4px; padding: 2px 7px; font-family: 'JetBrains Mono', monospace; }
+.sec-title { font-size: 17px; font-weight: 700; color: var(--txt1); }
+.sec-sub { font-size: 13px; color: var(--txt2); margin-bottom: 16px; line-height: 1.65; }
+h3 { font-size: 14px; font-weight: 700; color: var(--txt1); margin: 24px 0 8px; }
+h4 { font-size: 12.5px; font-weight: 700; color: var(--txt2); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: .05em; }
+p { font-size: 13px; color: var(--txt2); margin-bottom: 10px; }
+p strong { color: var(--txt1); }
+ul.plain { list-style: none; display: flex; flex-direction: column; gap: 7px; margin: 10px 0; }
+ul.plain li { font-size: 13px; color: var(--txt2); display: flex; align-items: baseline; gap: 8px; }
+ul.plain li::before { content: "·"; color: var(--amber); font-weight: 900; flex-shrink: 0; }
+ul.plain li strong { color: var(--txt1); }
+
+.callout { border-radius: 8px; padding: 14px 18px; margin: 14px 0; border-left: 3px solid; }
+.callout.warn { background: var(--amber-d); border-color: var(--amber); }
+.callout.warn .ct { color: var(--amber); }
+.callout.info { background: var(--blue-d); border-color: var(--blue); }
+.callout.info .ct { color: var(--blue); }
+.callout.ok { background: var(--green-d); border-color: var(--green); }
+.callout.ok .ct { color: var(--green); }
+.callout.red { background: var(--red-d); border-color: var(--red); }
+.callout.red .ct { color: var(--red); }
+.ct { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+.callout p:last-child { margin-bottom: 0; }
+
+.table-wrap { overflow-x: auto; margin: 14px 0; border-radius: 8px; border: 1px solid var(--brd); }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+thead tr { background: var(--sur2); }
+th { padding: 9px 13px; text-align: left; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--txt2); border-bottom: 1px solid var(--brd); white-space: nowrap; }
+td { padding: 10px 13px; border-bottom: 1px solid var(--brd); color: var(--txt2); vertical-align: top; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--sur2); }
+td strong { color: var(--txt1); font-weight: 600; }
+td code, th code { background: var(--mono); border-radius: 3px; padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue); }
+td.rid { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--amber); white-space: nowrap; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+@media (max-width: 620px) { .two-col { grid-template-columns: 1fr; } }
+.card { background: var(--sur); border: 1px solid var(--brd); border-radius: 8px; padding: 16px 18px; }
+.card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--txt3); margin-bottom: 10px; }
+.card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.card li { font-size: 12.5px; color: var(--txt2); display: flex; align-items: baseline; gap: 7px; }
+.card li::before { content: "·"; color: var(--amber); font-weight: 900; flex-shrink: 0; }
+.card li strong { color: var(--txt1); }
+
+.code-block { background: var(--mono); border: 1px solid var(--brd); border-radius: 8px; padding: 14px 16px; margin: 10px 0; overflow-x: auto; }
+.code-block code { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--txt1); white-space: pre; display: block; line-height: 1.75; }
+.code-block code .k { color: var(--blue); font-weight: 600; }
+.code-block code .s { color: var(--green); }
+.code-block code .c { color: var(--txt3); font-style: italic; }
+.code-block code .v { color: var(--teal); }
+.code-block code .n { color: var(--amber); }
+
+/* Feature blocks */
+.feat { background: var(--sur); border: 1px solid var(--brd); border-radius: 10px; margin: 16px 0; overflow: hidden; }
+.feat-hdr { padding: 13px 18px; background: var(--sur2); border-bottom: 1px solid var(--brd); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.feat-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--amber); background: var(--amber-d); padding: 2px 8px; border-radius: 4px; }
+.feat-name { font-size: 13.5px; font-weight: 700; color: var(--txt1); }
+.feat-loc { font-size: 10.5px; color: var(--txt3); font-family: 'JetBrains Mono', monospace; margin-left: auto; }
+.feat-body { padding: 16px 18px; }
+.feat-body p:last-child { margin-bottom: 0; }
+
+/* Chart spec */
+.chart-spec { background: var(--sur); border: 1px solid var(--brd); border-radius: 10px; margin: 16px 0; overflow: hidden; }
+.chart-hdr { padding: 14px 18px; border-bottom: 1px solid var(--brd); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.chart-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--purple); background: var(--purple-d); padding: 2px 8px; border-radius: 4px; }
+.chart-name { font-size: 13.5px; font-weight: 700; color: var(--txt1); }
+.chart-type { font-size: 10.5px; color: var(--txt3); margin-left: auto; }
+.chart-body { padding: 16px 18px; }
+.spec-grid { display: grid; grid-template-columns: 130px 1fr; gap: 8px 14px; font-size: 12.5px; }
+.spec-k { color: var(--txt3); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; padding-top: 2px; }
+.spec-v { color: var(--txt2); }
+.spec-v code { background: var(--mono); border-radius: 3px; padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue); }
+.swatch { display: inline-flex; align-items: center; gap: 5px; margin-right: 12px; font-size: 12px; }
+.sw { width: 11px; height: 11px; border-radius: 2px; display: inline-block; flex-shrink: 0; }
+
+/* State rows */
+.state-grid { display: flex; flex-direction: column; gap: 7px; margin: 14px 0; }
+.state-row { display: flex; align-items: baseline; gap: 12px; padding: 10px 14px; background: var(--sur); border: 1px solid var(--brd); border-radius: 6px; flex-wrap: wrap; }
+.state-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; min-width: 150px; flex-shrink: 0; }
+.sn-amber { color: var(--amber); } .sn-blue { color: var(--blue); } .sn-teal { color: var(--teal); }
+.sn-green { color: var(--green); } .sn-red { color: var(--red); } .sn-gray { color: var(--txt3); }
+.sn-purple { color: var(--purple); }
+.state-desc { font-size: 12.5px; color: var(--txt2); flex: 1; min-width: 240px; }
+
+code { background: var(--mono); border-radius: 3px; padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--blue); }
+hr { border: none; border-top: 1px solid var(--brd); margin: 36px 0; }
+a.xref { color: var(--blue); text-decoration: none; border-bottom: 1px dotted var(--blue); }
+a.xref:hover { border-bottom-style: solid; }
+.ver-row { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--brd); align-items: baseline; }
+.ver-row:last-child { border-bottom: none; }
+.ver-num { font-size: 12px; font-weight: 700; color: var(--amber); min-width: 60px; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; }
+.ver-desc { font-size: 12.5px; color: var(--txt2); flex: 1; }
+
+/* ══ Responsivo — padrão de projeto ═══════════════════════════════
+   Ver a skill `responsividade`. Token indivisível — endpoint, chave,
+   JSON, ID — quebra dentro do próprio bloco em vez de empurrar a
+   página. Bloco largo rola dentro do seu container, nunca no body. */
+code, kbd, samp { overflow-wrap: anywhere; }
+pre { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+pre code { overflow-wrap: normal; }
+ul.plain li, ul.plain li > * { min-width: 0; overflow-wrap: anywhere; }
+img, svg { max-width: 100%; height: auto; }
+.twrap, .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 640px) {
+  .doc, .section, .tr-left, .tr-desc, .tr-name { overflow-wrap: anywhere; }
+}
+
+.rid { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--teal); white-space: nowrap; }
+.gap { color: var(--amber); font-weight: 700; }
+
+.chip.ref { background: rgba(107,63,160,.12); color: var(--purple, #6B3FA0); }
+.src-note { font-size: 12px; color: var(--txt3); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--brd); }
+.cal { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 14px 0; }
+.cal-step { border: 1px solid var(--brd); border-radius: 8px; padding: 12px 14px; background: var(--sur); }
+.cal-when { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 800; color: var(--teal); text-transform: uppercase; letter-spacing: .05em; }
+.cal-what { font-size: 13px; font-weight: 700; color: var(--txt1); margin: 4px 0; }
+.cal-why { font-size: 12px; color: var(--txt2); }
+.dois { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin: 12px 0; }
+@media (max-width: 700px) { .dois { grid-template-columns: minmax(0, 1fr); } }
+.trib { border: 1px solid var(--brd); border-radius: 10px; padding: 12px 14px; background: var(--sur); }
+.trib h4 { margin: 0 0 6px; font-size: 14px; color: var(--txt1); }
+.trib p { margin: 4px 0; font-size: 12.5px; color: var(--txt2); }
+</style>
+</head>
+
+<body>
+<div class="doc">
+
+<a class="back" href="prds.html">← Hub de PRDs</a>
+<div class="eyebrow">Proposta · Produto → Ressarcimento</div>
+<h1>Ressarcimento — impacto no produto</h1>
+<p class="subtitle">O saldo credor de CBS e o de IBS podem virar dinheiro — cada um no seu processo, com seu órgão, seus prazos e suas regras. Hoje o protótipo trata ressarcimento como um rótulo instantâneo. O que isso exige do produto.</p>
+<div class="meta-bar">
+<div class="meta-pill"><span class="meta-label">Versão</span>&nbsp;<span class="meta-val">2.1</span></div>
+<div class="meta-pill"><span class="meta-label">Tipo</span>&nbsp;<span class="meta-val">Proposta de impacto</span></div>
+<div class="meta-pill"><span class="meta-label">Data</span>&nbsp;<span class="meta-val">17/09/2026</span></div>
+<div class="meta-pill"><span class="meta-label">Gaps</span>&nbsp;<span class="meta-val">12</span></div>
+<div class="meta-pill"><span class="meta-label">A construir</span>&nbsp;<span class="meta-val">15</span></div>
+<div class="meta-pill"><span class="meta-label">Decisões</span>&nbsp;<span class="meta-val">9</span></div>
+<div class="meta-pill"><span class="meta-label">Módulos afetados</span>&nbsp;<span class="meta-val">11</span></div>
+<div class="meta-pill" style="margin-left:auto"><span class="chip warn">Aguardando aprovação</span>&nbsp;<span class="chip warn">v2.1</span></div>
+</div>
+<div class="toc"><div class="toc-title">Índice</div><ul class="toc-list">
+<li><a href="#s01"><span class="toc-num">01</span> A regra, em uma página</a></li>
+<li><a href="#s02"><span class="toc-num">02</span> O que o produto faz hoje</a></li>
+<li><a href="#s03"><span class="toc-num">03</span> Os gaps</a></li>
+<li><a href="#s04"><span class="toc-num">04</span> O novo ciclo, por tributo</a></li>
+<li><a href="#s05"><span class="toc-num">05</span> Impacto módulo a módulo</a></li>
+<li><a href="#s06"><span class="toc-num">06</span> O que precisa ser construído</a></li>
+<li><a href="#s07"><span class="toc-num">07</span> Riscos</a></li>
+<li><a href="#s08"><span class="toc-num">08</span> O que ainda falta decidir</a></li>
+<li><a href="#s09"><span class="toc-num">09</span> Fontes</a></li>
+<li><a href="#s10"><span class="toc-num">10</span> Histórico de versões</a></li>
+</ul></div>
+<div class="section" id="s01">
+<div class="sec-hdr"><span class="sec-num">01</span><span class="sec-title">A regra, em uma página</span></div>
+<p>O detalhe, com cada dispositivo citado, está na <a href="ressarcimento-referencia.html" style="color:var(--blue)">referência normativa de ressarcimento</a>. Aqui fica o que o produto precisa respeitar.</p><div class="cal"><div class="cal-step"><div class="cal-when">Durante o mês M</div><div class="cal-what">Saldo se forma</div><div class="cal-why">Créditos apropriados abatem débitos na ordem do art. 53</div></div><div class="cal-step"><div class="cal-when">Até o último dia útil de M</div><div class="cal-what">Intenção (opcional)</div><div class="cal-why">Trava o saldo para não compensar M+1. Pode ser cancelada</div></div><div class="cal-step"><div class="cal-when">Até o último dia útil de M+1</div><div class="cal-what">Pedido</div><div class="cal-why">Integral ou parcial. O valor pedido fica bloqueado até a decisão</div></div><div class="cal-step"><div class="cal-when">30 · 60 · 180 dias</div><div class="cal-what">Análise</div><div class="cal-why">Fiscalização suspende o prazo, por até 360 dias</div></div><div class="cal-step"><div class="cal-when">Decisão ou silêncio</div><div class="cal-what">Pagamento</div><div class="cal-why">Sem resposta: 15 dias. Selic a partir do 2º mês; diária se o Fisco atrasar</div></div></div><div class="table-wrap"><table><thead><tr><th>Regra</th><th>Consequência para o produto</th></tr></thead><tbody><tr><td><strong>Sem intenção nem pedido, nada é devolvido</strong></td><td>O saldo vira compensação a partir de M+1 e segue crédito por 5 anos — não existe ressarcimento automático</td></tr><tr><td><strong>O que já compensou não se ressarce</strong></td><td>Sem intenção, o saldo pedido em M+1 pode já ter sido consumido; o produto precisa mostrar o que ainda está disponível</td></tr><tr><td><strong>Pedido parcial, cancelado ou vencido</strong></td><td>O remanescente volta a compensar — cada caso a partir de uma data diferente</td></tr><tr><td><strong>Indeferimento</strong></td><td>Volta a compensar a partir da decisão definitiva</td></tr><tr><td><strong>Saldos de 2026</strong></td><td>Não são ressarcidos e são desconsiderados em 2027: o módulo começa a valer com fatos geradores de 2027</td></tr><tr><td><strong>Pedido centralizado na matriz</strong></td><td>Gestão por CNPJ raiz, não por estabelecimento</td></tr><tr><td><strong>Créditos não ressarcíveis</strong></td><td>Presumidos de regimes específicos e créditos de devolução pós-2027 só compensam — precisam ficar separados</td></tr><tr><td><strong>Transferência de excesso não é ressarcimento</strong></td><td>RAD ou split acima do débito voltam ao fornecedor em 3 dias úteis, sem pedido</td></tr></tbody></table></div><h3>1.1 Dois processos, não um</h3><p>CBS e IBS têm o mesmo desenho de prazos, mas são pedidos distintos, a órgãos distintos, sobre saldos distintos, com regras de indeferimento, sistemas e canais diferentes. Somar os dois num indicador ou numa decisão mistura coisas que nunca se compensam entre si.</p><div class="table-wrap"><table><thead><tr><th>Aspecto</th><th>CBS</th><th>IBS</th></tr></thead><tbody><tr><td><strong>Quem aprecia</strong></td><td>Receita Federal</td><td>Comitê Gestor do IBS</td></tr><tr><td><strong>Regulamento</strong></td><td>Decreto 12.955/2026</td><td>Resolução CGIBS 6/2026</td></tr><tr><td><strong>Saldo a recuperar</strong></td><td>Apurado só com débitos e créditos de CBS</td><td>Apurado só com débitos e créditos de IBS</td></tr><tr><td><strong>Intenção e pedido</strong></td><td>Declarados para a CBS</td><td>Declarados para o IBS — independentes da CBS</td></tr><tr><td><strong>Programa de conformidade</strong></td><td>Da RFB (PNCT, LC 225/2026)</td><td>Do CGIBS</td></tr><tr><td><strong>Média do art. 40</strong></td><td>Créditos e débitos de CBS dos 24 meses</td><td>Créditos e débitos de IBS dos 24 meses</td></tr><tr><td><strong>Indeferimento</strong></td><td>Previsto, sem rol publicado</td><td>Rol do art. 486: notificação não atendida, cadastro irregular, auto de infração pendente, débitos exigíveis</td></tr><tr><td><strong>Sistema</strong></td><td>Plataforma CBS: intenção, consulta de pedidos, PER/DCOMP gerado automaticamente (simulação em 2026)</td><td>Sistema de Apuração do IBS: saldo disponível; pedido não disponível no piloto</td></tr><tr><td><strong>API</strong></td><td>Créditos por documento, com <code>saldoCredor</code> e <code>pedidoRessarcimento</code></td><td>Nenhuma pública</td></tr><tr><td><strong>Alíquota em 2027</strong></td><td>Plena</td><td>De teste — saldos pequenos</td></tr></tbody></table></div>
+</div>
+<div class="section" id="s02">
+<div class="sec-hdr"><span class="sec-num">02</span><span class="sec-title">O que o produto faz hoje</span></div>
+<div class="table-wrap"><table><thead><tr><th>Onde</th><th>O que existe</th><th>Evidência</th></tr></thead><tbody><tr><td>Base de dados</td><td><em>Ressarcimento</em> é um dos quatro métodos de extinção sorteados para créditos <code>utilizado</code></td><td><code>src/js/data-sync-fixed.js</code>, <code>_metExtCred</code></td></tr><tr><td>Crédito, Débito, Pagamentos, Inconsistências</td><td>Badge e filtro por método de extinção</td><td>Mapas de cor nas listagens</td></tr><tr><td>Ciclo do crédito</td><td>Ressarcimento tratado como extinção no ato</td><td>Evento <code>UTILIZAÇÃO</code> do RF</td></tr><tr><td>Analytics</td><td>O excedente do mês credor “vira saldo a recuperar” — mas o saldo não é calculado</td><td><code>src/index.html</code>, tooltip do gráfico mensal</td></tr><tr><td>Assistente tributário</td><td>Cita arts. 55 e 58 da LC 214/2025 para ressarcimento</td><td><code>src/index.html</code>, base de respostas</td></tr><tr><td>Visão por tributo</td><td>Crédito e débito já separam IBS e CBS por registro fiscal — base boa para a separação</td><td>RF por tributo</td></tr></tbody></table></div><div class="callout red"><div class="ct">O que o protótipo afirma e não sustenta</div><p>Que o ressarcimento é instantâneo — são até 180 dias e pode ser negado. Que existe saldo a recuperar — nunca é calculado. E a base legal do assistente — o ressarcimento está nos arts. 39 e 40; a ordem de uso, no art. 53.</p></div>
+</div>
+<div class="section" id="s03">
+<div class="sec-hdr"><span class="sec-num">03</span><span class="sec-title">Os gaps</span></div>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Gap</th><th>A regra exige</th></tr></thead><tbody><tr><td><strong>G-01</strong></td><td>Não há saldo a recuperar por período e por tributo</td><td>Saldo de CBS e de IBS separados, na data do último dia do período, com transporte</td></tr><tr><td><strong>G-02</strong></td><td>Ressarcimento não tem ciclo</td><td>Intenção → pedido → análise → pago, parcial, indeferido ou pago por silêncio</td></tr><tr><td><strong>G-03</strong></td><td>Não existe a trava da intenção</td><td>Saldo com intenção não compensa M+1; valor pedido não compensa até a decisão</td></tr><tr><td><strong>G-04</strong></td><td>Não há prazos</td><td>Intenção, pedido, análise (30/60/180), fiscalização (360) e pagamento (15 dias)</td></tr><tr><td><strong>G-05</strong></td><td>Não há dinheiro a receber</td><td>Valor pedido como ativo, com previsão e correção pela Selic</td></tr><tr><td><strong>G-06</strong></td><td>Nada separa a gestão por tributo</td><td>Dois espaços de trabalho: CBS com RFB, IBS com CGIBS — sem totais somados</td></tr><tr><td><strong>G-07</strong></td><td>Não há hipótese de prazo</td><td>Conformidade por órgão, ativo imobilizado e média de 24 meses por tributo</td></tr><tr><td><strong>G-08</strong></td><td>Ressarcimento, transferência e restituição se confundem</td><td>Três mecanismos com gatilho, prazo e dono diferentes</td></tr><tr><td><strong>G-09</strong></td><td>Não há conferência com a Receita</td><td><code>saldoCredor</code> e <code>pedidoRessarcimento</code> por documento — só CBS</td></tr><tr><td><strong>G-10</strong></td><td>Não há impedimentos do IBS</td><td>Verificar cadastro, notificações, autos de infração pendentes e débitos exigíveis antes do pedido</td></tr><tr><td><strong>G-11</strong></td><td>Não há crédito não ressarcível</td><td>Presumidos de regimes específicos e devoluções pós-2027 só compensam</td></tr><tr><td><strong>G-12</strong></td><td>Base legal errada no assistente</td><td>Arts. 39, 40, 53 e 54 da LC 214/2025</td></tr></tbody></table></div>
+</div>
+<div class="section" id="s04">
+<div class="sec-hdr"><span class="sec-num">04</span><span class="sec-title">O novo ciclo, por tributo</span></div>
+<p>Cada tributo tem o próprio ciclo. O mesmo documento pode ter o crédito de CBS em pedido e o de IBS compensando.</p><div class="callout info"><div class="ct">Estados do processo, marcas no registro fiscal</div><p>Os estados abaixo são do <strong>processo de ressarcimento</strong>. No RF, <em>reservado</em> e <em>em pedido</em> são marcas sobre o crédito apropriado: o <code>statusCredito</code> continua <code>apropriado</code> e só deixa de estar disponível para compensar. Só o pagamento leva o RF a <code>utilizado</code>. Decisão D-06 do <a href="proposta-ciclo-vida.html" style="color:var(--blue)">ciclo de vida do produto</a>, aprovada em 17/09/2026.</p></div><div class="table-wrap"><table><thead><tr><th>Estado</th><th>Entra quando</th><th>Sai para</th></tr></thead><tbody><tr><td><strong>Não utilizado</strong></td><td>Crédito apropriado sem débito para abater</td><td>Compensado · Intenção declarada · Prescrito (5 anos)</td></tr><tr><td><strong>Intenção declarada</strong></td><td>Até o último dia útil do período</td><td>Pedido · Intenção cancelada · Intenção vencida</td></tr><tr><td><strong>Intenção cancelada / vencida</strong></td><td>Cancelamento expresso ou fim do prazo do pedido</td><td>Não utilizado — volta a compensar</td></tr><tr><td><strong>Em análise</strong></td><td>Pedido formalizado; valor bloqueado</td><td>Em exigência · Em fiscalização · Deferido · Deferido parcial · Indeferido · Prazo esgotado · Pedido cancelado</td></tr><tr><td><strong>Em fiscalização</strong></td><td>Fiscalização iniciada antes do fim do prazo</td><td>Homologado · Prazo de 360 dias esgotado</td></tr><tr><td><strong>Deferido parcial</strong></td><td>Parte reconhecida</td><td>Pago (parte) · resto volta a compensar</td></tr><tr><td><strong>Indeferido</strong></td><td>Negativa definitiva</td><td>Não utilizado — volta a compensar</td></tr><tr><td><strong>Prazo esgotado</strong></td><td>Sem manifestação no prazo, ou fiscalização além de 360 dias</td><td>Pago em 15 dias, com Selic diária</td></tr><tr><td><strong>Pago</strong></td><td>Recebimento conciliado</td><td>Fim — <code>metodoExtincao = Ressarcimento</code></td></tr></tbody></table></div>
+</div>
+<div class="section" id="s05">
+<div class="sec-hdr"><span class="sec-num">05</span><span class="sec-title">Impacto módulo a módulo</span></div>
+<p>Onze módulos mudam; três de forma estrutural. O centro vai para um módulo novo — ver a <a href="proposta-modulo-ressarcimento.html" style="color:var(--blue)">proposta do módulo de Ressarcimento</a>.</p><h3>5.1 Apuração IBS/CBS <span class="chip warn">Estrutural</span></h3><p>Fecha o período com o saldo a recuperar de cada tributo.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>Saldo a recuperar</td><td>Um por tributo, na data do último dia do período, com transporte do não usado</td></tr><tr><td>Travas</td><td>Intenção trava M+1; pedido trava o valor até a decisão; retorno à compensação em quatro datas diferentes</td></tr><tr><td>Fechamento</td><td>Decisão de intenção por tributo até o último dia útil</td></tr><tr><td>Início em 2027</td><td>Saldos de 2026 desconsiderados</td></tr></tbody></table></div><h3>5.2 Crédito IBS/CBS <span class="chip warn">Estrutural</span></h3><p>Ganha o ciclo e separa o não ressarcível.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>Marcas no RF</td><td><em>Reservado</em> e <em>em pedido</em> sobre o RF apropriado do tributo; <code>statusCredito</code> não ganha valores novos</td></tr><tr><td>Método de extinção</td><td><em>Ressarcimento</em> só no estado Pago; fim do sorteio na base</td></tr><tr><td>Não ressarcível</td><td>Marca de crédito que só compensa</td></tr><tr><td>Prescrição</td><td>5 anos da apropriação; perto do fim, sugerir ressarcimento</td></tr></tbody></table></div><h3>5.3 Conciliação <span class="chip warn">Estrutural</span></h3><p>Confronto novo, com profundidade diferente por tributo.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>CBS</td><td><code>saldoCredor</code> e <code>pedidoRessarcimento</code> por documento contra o produto</td></tr><tr><td>IBS</td><td>Sem API: confronto do saldo total do período com a apuração assistida importada</td></tr><tr><td>Recebimento</td><td>Recebido contra deferido corrigido, por tributo</td></tr></tbody></table></div><h3>5.4 Débitos IBS/CBS <span class="chip info">Médio</span></h3><p>A trava muda o saldo a recolher.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>Guia</td><td>Débito que seria compensado vira guia quando há intenção do mesmo tributo</td></tr></tbody></table></div><h3>5.5 Inconsistências <span class="chip info">Médio</span></h3><p>Família nova, por tributo.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>Ocorrências</td><td>Intenção sem pedido · divergência de saldo · indeferimento · pagamento divergente · impedimento do IBS</td></tr></tbody></table></div><h3>5.6 Automações <span class="chip info">Médio</span></h3><p>Prazos por tributo.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>Alertas</td><td>Intenção, pedido, análise e pagamento de 15 dias — separados por CBS e IBS</td></tr></tbody></table></div><h3>5.7 Integrações <span class="chip info">Médio</span></h3><p>Canais diferentes.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>CBS</td><td>API de créditos (M0 na priorização); pedido via Plataforma CBS com PER/DCOMP</td></tr><tr><td>IBS</td><td>Sem API pública; pedido sem canal eletrônico publicado</td></tr></tbody></table></div><h3>5.8 Organização <span class="chip info">Médio</span></h3><p>O prazo depende de quem é o contribuinte, em cada órgão.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>Conformidade</td><td>Enquadramento no programa da RFB e no do CGIBS, separados, com vigência</td></tr><tr><td>Matriz</td><td>Pedido centralizado no CNPJ matriz</td></tr><tr><td>Autos de infração de IBS</td><td>Registro para o impedimento do art. 486</td></tr></tbody></table></div><h3>5.9 Pagamentos RAD <span class="chip ok">Baixo</span></h3><p>Separar o que é transferência de excesso.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>Transferência</td><td>Volta ao fornecedor em 3 dias úteis — não é ressarcimento do adquirente</td></tr></tbody></table></div><h3>5.10 Início e Analytics <span class="chip ok">Baixo</span></h3><p>Indicadores sempre por tributo.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>KPIs</td><td>Saldo credor, em análise e recebido — por tributo, nunca somados</td></tr></tbody></table></div><h3>5.11 Assistente tributário <span class="chip ok">Baixo</span></h3><p>Correção de conteúdo.</p><div class="table-wrap"><table><thead><tr><th>O que muda</th><th>Detalhe</th></tr></thead><tbody><tr><td>Base legal</td><td>Arts. 39, 40, 53 e 54 da LC 214/2025</td></tr></tbody></table></div>
+</div>
+<div class="section" id="s06">
+<div class="sec-hdr"><span class="sec-num">06</span><span class="sec-title">O que precisa ser construído</span></div>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>O que construir</th><th>Onde</th><th>Faixa</th></tr></thead><tbody><tr><td><strong>C-01</strong></td><td>Saldo a recuperar por período e tributo, com transporte</td><td>Apuração</td><td><span class="chip teal">M0</span></td></tr><tr><td><strong>C-02</strong></td><td>Ciclo do crédito não utilizado, por tributo</td><td>Crédito</td><td><span class="chip teal">M0</span></td></tr><tr><td><strong>C-03</strong></td><td>Travas: intenção, pedido e as quatro datas de retorno à compensação</td><td>Apuração · Débito</td><td><span class="chip teal">M0</span></td></tr><tr><td><strong>C-04</strong></td><td>Módulo de Ressarcimento com espaços separados para CBS e IBS</td><td>Novo módulo</td><td><span class="chip teal">M0</span></td></tr><tr><td><strong>C-05</strong></td><td>Calendário e alertas de prazo por tributo</td><td>Automações</td><td><span class="chip teal">M0</span></td></tr><tr><td><strong>C-06</strong></td><td>Fim do ressarcimento sorteado; <em>Ressarcimento</em> só no estado Pago</td><td>Crédito</td><td><span class="chip teal">M0</span></td></tr><tr><td><strong>C-07</strong></td><td>Correção da base legal do assistente</td><td>Assistente</td><td><span class="chip teal">M0</span></td></tr><tr><td><strong>C-08</strong></td><td>Marca de crédito não ressarcível</td><td>Crédito</td><td><span class="chip teal">M0</span></td></tr><tr><td><strong>C-09</strong></td><td>Conferência com a API de créditos da CBS</td><td>Conciliação</td><td><span class="chip info">M1</span></td></tr><tr><td><strong>C-10</strong></td><td>Conformidade por órgão e cálculo da hipótese de prazo</td><td>Organização</td><td><span class="chip info">M1</span></td></tr><tr><td><strong>C-11</strong></td><td>Impedimentos do IBS antes do pedido</td><td>Ressarcimento · Organização</td><td><span class="chip info">M1</span></td></tr><tr><td><strong>C-12</strong></td><td>Família de inconsistências de ressarcimento</td><td>Inconsistências</td><td><span class="chip info">M1</span></td></tr><tr><td><strong>C-13</strong></td><td>Correção pela Selic e conciliação do recebimento</td><td>Ressarcimento · Conciliação</td><td><span class="chip info">M1</span></td></tr><tr><td><strong>C-14</strong></td><td>Separação de transferência de excesso e restituição</td><td>Pagamentos · Crédito</td><td><span class="chip info">M1</span></td></tr><tr><td><strong>C-15</strong></td><td>KPIs e séries por tributo</td><td>Início · Analytics</td><td><span class="chip ref">M2</span></td></tr></tbody></table></div>
+</div>
+<div class="section" id="s07">
+<div class="sec-hdr"><span class="sec-num">07</span><span class="sec-title">Riscos</span></div>
+<div class="table-wrap"><table><thead><tr><th>Risco</th><th>Consequência</th><th>Mitigação</th></tr></thead><tbody><tr><td><strong>Somar CBS e IBS</strong></td><td>Decisão de caixa sobre um número que nenhum órgão reconhece</td><td>Nenhum indicador ou ação combina os dois</td></tr><tr><td><strong>Perder o prazo da intenção</strong></td><td>O saldo compensa M+1 e não pode mais ser ressarcido</td><td>Alerta a partir do dia 20, por tributo</td></tr><tr><td><strong>Intenção sem pedido</strong></td><td>Débito vira guia sem necessidade</td><td>Inconsistência e contagem regressiva</td></tr><tr><td><strong>Pedir IBS com impedimento</strong></td><td>Indeferimento previsível, com o valor bloqueado até a decisão</td><td>Verificação do art. 486 antes do registro</td></tr><tr><td><strong>Tratar 2026 como ressarcível</strong></td><td>Expectativa de caixa que não existe</td><td>Módulo ativo a partir de fatos geradores de 2027</td></tr><tr><td><strong>Canal do IBS indefinido</strong></td><td>O fluxo do IBS pode mudar quando o CGIBS publicar</td><td>Registro do pedido feito fora, com protocolo</td></tr></tbody></table></div>
+</div>
+<div class="section" id="s08">
+<div class="sec-hdr"><span class="sec-num">08</span><span class="sec-title">O que ainda falta decidir</span></div>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Decisão</th><th>Recomendação</th></tr></thead><tbody><tr><td><strong>D-01</strong></td><td>Módulo próprio ou aba de Crédito?</td><td><strong>Módulo próprio</strong>, com dois espaços de trabalho. Ver a <a href="proposta-modulo-ressarcimento.html" style="color:var(--blue)">proposta do módulo de Ressarcimento</a></td></tr><tr><td><strong>D-02</strong></td><td>A gestão é isolada por tributo?</td><td><strong>Sim, sem exceção</strong>: saldo, intenção, pedido, prazo, KPI e decisão são sempre de um tributo</td></tr><tr><td><strong>D-03</strong></td><td>Quem declara a intenção?</td><td><strong>O analista</strong>, com aprovação acima de valor configurável por tributo</td></tr><tr><td><strong>D-04</strong></td><td>O produto transmite o pedido ou registra o feito fora?</td><td><strong>Registra</strong> — nº do PER/DCOMP na CBS, protocolo no IBS</td></tr><tr><td><strong>D-05</strong></td><td>Pedido por CNPJ ou por raiz?</td><td><strong>Resolvida pela norma</strong>: centralizado na matriz</td></tr><tr><td><strong>D-06</strong></td><td>Mostrar correção estimada?</td><td><strong>Sim</strong>, rotulada como estimativa</td></tr><tr><td><strong>D-07</strong></td><td>Créditos de PIS/Cofins entram?</td><td><strong>Não</strong> — rito da legislação anterior</td></tr><tr><td><strong>D-08</strong></td><td>Remover o ressarcimento sorteado da base?</td><td><strong>Sim</strong></td></tr><tr><td><strong>D-09</strong></td><td>Intenção e pedido mudam o <code>statusCredito</code> do RF?</td><td><span class="chip ok">Aprovada · 17/09/2026</span> <strong>Não</strong> — viram marcas sobre o RF apropriado. Decidido no <a href="proposta-ciclo-vida.html" style="color:var(--blue)">ciclo de vida do produto</a> (D-06)</td></tr></tbody></table></div>
+</div>
+<div class="section" id="s09">
+<div class="sec-hdr"><span class="sec-num">09</span><span class="sec-title">Fontes</span></div>
+<p>Todas as regras deste documento estão detalhadas, com citação por dispositivo, na <a href="ressarcimento-referencia.html" style="color:var(--blue)">referência normativa de ressarcimento</a>.</p>
+</div>
+<div class="section" id="s10">
+<div class="sec-hdr"><span class="sec-num">10</span><span class="sec-title">Histórico de versões</span></div>
+<div class="ver-row"><div class="ver-num">v2.1</div><div class="ver-desc">17/09/2026 — <strong>Reserva e pedido como marcas no RF.</strong> O ciclo por tributo passa a distinguir estado do processo e marca no registro fiscal: o <code>statusCredito</code> não muda até o pagamento. Nova decisão D-09, já aprovada (D-06 do ciclo de vida).</div></div><div class="ver-row"><div class="ver-num">v2.0</div><div class="ver-desc">16/09/2026 — <strong>Gestão isolada por tributo</strong> e revisão sobre a referência normativa. CBS e IBS passam a ser dois processos: saldo, intenção, pedido, prazo, indicador e decisão nunca são somados. Entram as travas e as quatro datas de retorno à compensação, o pagamento por silêncio em 15 dias, a fiscalização de 360 dias, a Selic diária, os impedimentos do IBS (art. 486), os créditos não ressarcíveis, a centralização na matriz e a regra de que saldos de 2026 não são ressarcidos. Gaps de 10 para 12; itens a construir de 13 para 15; D-05 resolvida pela norma.</div></div><div class="ver-row"><div class="ver-num">v1.0</div><div class="ver-desc">16/09/2026 — Primeira versão.</div></div>
+</div>
+</div>
+</body>
+</html>

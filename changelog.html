@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Changelog · SplitHub Protótipo</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px;-webkit-font-smoothing:antialiased}
+:root{
+  --bg:#0D1117;--surface:#161C25;--surface2:#1E2533;--brd:#262E3F;
+  --txt1:#E4E8EF;--txt2:#8A99B4;--txt3:#4F5B73;
+  --blue:#4D9FFF;--blue-dim:rgba(77,159,255,.1);
+  --teal:#1FBAAA;--teal-dim:rgba(31,186,170,.1);
+  --green:#22C55E;--green-dim:rgba(34,197,94,.1);
+  --amber:#F59E0B;--amber-dim:rgba(245,158,11,.1);
+  --red:#F04B5C;--red-dim:rgba(240,75,92,.1);
+  --purple:#A78BFA;--purple-dim:rgba(167,139,250,.1);
+  --mono:#0A0F16;
+}
+body{background:var(--bg);color:var(--txt1);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.6}
+a{color:var(--blue);text-decoration:none}
+code{font-family:'IBM Plex Mono','Menlo',monospace;font-size:.82em;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;color:var(--teal)}
+
+/* Layout */
+.wrap{max-width:920px;margin:0 auto;padding:40px 24px 80px}
+
+/* Header */
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid var(--brd)}
+.hdr-logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--teal),var(--blue));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff}
+.logo-name{font-size:1.05rem;font-weight:700;color:var(--txt1)}
+.logo-sub{font-size:.75rem;color:var(--txt3);margin-top:1px}
+.back-btn{font-size:.8rem;color:var(--txt2);border:1px solid var(--brd);border-radius:6px;padding:5px 12px;background:var(--surface);cursor:pointer;text-decoration:none;transition:border-color .15s}
+.back-btn:hover{border-color:var(--blue);color:var(--blue);text-decoration:none}
+
+/* Page title */
+.page-title{font-size:1.6rem;font-weight:800;color:var(--txt1);letter-spacing:-.02em;margin-bottom:6px}
+.page-sub{font-size:.88rem;color:var(--txt2);margin-bottom:28px}
+
+/* Stats bar */
+.stats-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+.stat{background:var(--surface);border:1px solid var(--brd);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.stat-val{font-size:1.4rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.stat-lbl{font-size:.75rem;color:var(--txt2);line-height:1.3}
+
+/* Version block */
+.version-block{margin-bottom:36px}
+.version-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--brd)}
+.version-tag{font-family:'IBM Plex Mono',monospace;font-size:.88rem;font-weight:700;color:var(--txt1);background:var(--surface);border:1px solid var(--brd);border-radius:5px;padding:3px 10px}
+.version-date{font-size:.78rem;color:var(--txt3)}
+.version-label{font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:3px}
+.vl-current{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+.vl-past{background:var(--surface2);color:var(--txt3);border:1px solid var(--brd)}
+
+/* Module section */
+.module-section{margin-bottom:20px}
+.module-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer;user-select:none}
+.module-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.module-name{font-size:.82rem;font-weight:700;color:var(--txt2);letter-spacing:.03em}
+.module-count{font-size:.72rem;color:var(--txt3);margin-left:auto;background:var(--surface2);border:1px solid var(--brd);border-radius:10px;padding:1px 7px}
+
+/* Change item */
+.change-list{display:flex;flex-direction:column;gap:6px;padding-left:16px}
+.change-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:6px;border:1px solid var(--brd);background:var(--surface);font-size:.82rem}
+.change-item:hover{border-color:rgba(255,255,255,.1)}
+.change-type{flex-shrink:0;font-size:.67rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-top:1px}
+.ct-feat {background:var(--blue-dim);  color:var(--blue);  border:1px solid rgba(77,159,255,.25)}
+.ct-fix  {background:var(--green-dim); color:var(--green); border:1px solid rgba(34,197,94,.25)}
+.ct-ux   {background:var(--teal-dim);  color:var(--teal);  border:1px solid rgba(31,186,170,.25)}
+.ct-data {background:var(--purple-dim);color:var(--purple);border:1px solid rgba(167,139,250,.25)}
+.ct-rem  {background:var(--red-dim);   color:var(--red);   border:1px solid rgba(240,75,92,.25)}
+.change-body{flex:1;min-width:0}
+.change-title{color:var(--txt1);font-weight:600;margin-bottom:2px}
+.change-desc{color:var(--txt2);font-size:.78rem;line-height:1.55}
+.change-commit{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--txt3);margin-top:3px}
+
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;align-items:center}
+.filter-btn{font-size:.75rem;font-weight:600;padding:4px 12px;border-radius:5px;border:1px solid var(--brd);background:var(--surface);color:var(--txt2);cursor:pointer;transition:all .15s}
+.filter-btn:hover,.filter-btn.active{border-color:var(--blue);color:var(--blue);background:var(--blue-dim)}
+.filter-sep{width:1px;height:20px;background:var(--brd);margin:0 2px}
+
+/* No results */
+.no-results{text-align:center;padding:40px;color:var(--txt3);font-size:.88rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div class="hdr-logo">
+      <div class="logo-mark">S</div>
+      <div>
+        <div class="logo-name">SplitHub</div>
+        <div class="logo-sub">Positivo Tecnologia · Protótipo IBS/CBS</div>
+      </div>
+    </div>
+    <a class="back-btn" href="index.html">← Voltar ao protótipo</a>
+  </div>
+
+  <!-- Title -->
+  <div class="page-title">Changelog do Protótipo</div>
+  <div class="page-sub">Controle de versionamento · Registro de todas as inclusões e alterações realizadas por módulo</div>
+
+  <!-- Stats -->
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat"><div class="stat-val" style="color:var(--blue)" id="s-total">—</div><div class="stat-lbl">Alterações<br>no total</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--green)" id="s-feat">—</div><div class="stat-lbl">Novas<br>funcionalidades</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--teal)" id="s-ux">—</div><div class="stat-lbl">Melhorias<br>de UX</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--red)" id="s-rem">—</div><div class="stat-lbl">Itens<br>removidos</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--purple)" id="s-data">—</div><div class="stat-lbl">Dados &amp;<br>modelo</div></div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-bar">
+    <span style="font-size:.75rem;color:var(--txt3);font-weight:600">Módulo:</span>
+    <button class="filter-btn active" onclick="filtrar('modulo','')">Todos</button>
+    <button class="filter-btn" onclick="filtrar('modulo','Contratos')">Contratos</button>
+    <button class="filter-btn" onclick="filtrar('modulo','Ingestão de DF')">Ingestão de DF</button>
+    <button class="filter-btn" onclick="filtrar('modulo','Créditos IBS/CBS')">Créditos IBS/CBS</button>
+    <button class="filter-btn" onclick="filtrar('modulo','Conciliação')">Conciliação</button>
+    <button class="filter-btn" onclick="filtrar('modulo','Histórico & Auditoria')">Histórico</button>
+    <button class="filter-btn" onclick="filtrar('modulo','Dashboard')">Dashboard</button>
+    <div class="filter-sep"></div>
+    <span style="font-size:.75rem;color:var(--txt3);font-weight:600">Tipo:</span>
+    <button class="filter-btn" onclick="filtrar('tipo','feat')">Feat</button>
+    <button class="filter-btn" onclick="filtrar('tipo','ux')">UX</button>
+    <button class="filter-btn" onclick="filtrar('tipo','data')">Dados</button>
+    <button class="filter-btn" onclick="filtrar('tipo','rem')">Removido</button>
+  </div>
+
+  <!-- Changelog -->
+  <div id="changelog-root"></div>
+
+</div>
+
+<script>
+var CHANGELOG = [
+  {
+    version: '0.21.0',
+    date: '18/09/2026',
+    current: true,
+    changes: [
+      { modulo:'Histórico & Auditoria', tipo:'fix', title:'Ressarcimento no histórico do DF e do RF, passo a passo', desc:'Crédito ressarcido deixa de aparecer como abatimento de débito. O histórico mostra intenção, aprovação, saldo apurado, conferência ou impedimentos, pedido, decisão, pagamento com Selic e extinção — e quando o RF volta a compensar. Caso de exemplo: NF-e 000015.' },
+      { modulo:'Histórico & Auditoria', tipo:'fix', title:'Cronologia dos eventos corrigida em todos os RFs', desc:'Apropriação na data do recolhimento (art. 47), utilização depois da apropriação, conciliações depois do documento e do pagamento, débito extinto depois do RF. 0 erros nos 400 RFs.' },
+      { modulo:'Créditos IBS/CBS', tipo:'feat', title:'Painel Ressarcimento no ciclo do crédito', desc:'Por tributo: apropriado livre, reservado, em pedido, compensado e ressarcido, com atalhos para os RFs de cada marca.' },
+      { modulo:'Dashboards', tipo:'fix', title:'Composição de créditos só de entrada; Início e Crédito com as mesmas definições', desc:'O gráfico somava RFs de saída. A Apropriar e Total Originado passam a ter a mesma regra no Início e no Crédito. Utilizados separam compensados e ressarcidos.' },
+    ]
+  },
+  {
+    version: '0.20.0',
+    date: '18/09/2026',
+    current: false,
+    changes: [
+      { modulo:'Ressarcimento', tipo:'feat', title:'Novo módulo de Ressarcimento — CBS e IBS em espaços separados (simulação 2026)', desc:'Negócio: o saldo credor de cada tributo vira dinheiro pelo seu órgão — CBS na Receita Federal, IBS no Comitê Gestor. Saldo por período, intenção, pedido integral ou parcial, decisão e recebimento com Selic. A regra de saldos de 2026 fica desligada para demonstrar o fluxo.' },
+      { modulo:'Créditos IBS/CBS', tipo:'feat', title:'Marcas Reservado, Em pedido e Ressarcido no RF, com filtro', desc:'Reserva e pedido não mudam o status do crédito; só o pagamento grava utilizado com método Ressarcimento. O método deixa de ser sorteado na base.' },
+      { modulo:'Apuração IBS/CBS', tipo:'data', title:'Transporte do saldo desconta o que sai para ressarcimento', desc:'Crédito ressarcido fica fora de Utilizados e não abate Tributos a pagar. A aba passa a sincronizar com os DFs ao abrir pelo Analytics.' },
+      { modulo:'Início', tipo:'feat', title:'Card Saldo credor e ressarcimento por tributo', desc:'CBS e IBS lado a lado, sem soma: disponível, reservado, em pedido, recebido e próximo prazo.' },
+      { modulo:'Débito · Conciliação · Organização', tipo:'feat', title:'Faixas e tabela do ressarcimento nos módulos afetados', desc:'Trava da intenção sobre os débitos do mês seguinte, conferência do saldo com a Receita e enquadramento por órgão.' },
+      { modulo:'Inconsistências · Automações', tipo:'feat', title:'Família Ressarcimento e eventos de prazo', desc:'Saldo divergente da Receita, impedimento do IBS e deferido parcial no kanban; relatório mensal e quatro eventos de prazo.' },
+      { modulo:'Plataforma', tipo:'fix', title:'Sincronia de valores com o ressarcimento', desc:'O ressarcimento é aplicado à base antes de qualquer gráfico, e cada ação do módulo re-sincroniza indicadores, listagens e Apuração.' },
+    ]
+  },
+  {
+    version: '0.19.0',
+    date: '21/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Inconsistências', tipo:'feat', title:'Inconsistência sempre nasce de um DF — vinculação correta DF → RF', desc:'Regra de negócio: toda inconsistência tem vínculo obrigatório ao DF de origem. Quando gerada antes da criação dos RFs (falha de layout, CNPJ inválido, duplicidade na ingestão), o card fica vinculado somente ao DF. Quando gerada após a criação dos RFs (divergência CAPUR, comprovante ausente CFIN), o card vincula ao DF e ao RF específico afetado. Um DF pode acumular múltiplos cards simultâneos. Técnico: _construirInconsistenciasGlobal popula nf._inconsistencias (sempre) e rf._inconsistencias (somente quando rfId preenchido).', commit:'2ce9d29' },
+      { modulo:'Inconsistências', tipo:'feat', title:'DFs com falha de importação rastreados como documentos fiscais', desc:'Negócio: documentos rejeitados na ingestão (falha de layout, CNPJ divergente, duplicidade) agora aparecem nas listagens de DFs de entrada com statusImportacao:"falha", permitindo ao operador identificar e tratar a falha dentro do mesmo fluxo de créditos. Técnico: stubs NF criados dinamicamente em nfListaFiltradaGlobal a partir dos dados do _ingDadosGlobal quando o DF não existe como NF real.', commit:'2ce9d29' },
+      { modulo:'Inconsistências', tipo:'fix', title:'Um DF pode ter múltiplas inconsistências — todas exibidas em conjunto', desc:'Negócio: um documento fiscal pode acumular inconsistências em etapas distintas do ciclo (ex: divergência de valor IBS na apuração E comprovante CBS ausente na conciliação financeira). Todas as inconsistências ativas aparecem simultaneamente como pills vermelhos nas listagens de RF e nos modais de detalhe. Técnico: substituição do campo singular rf.inconsistencia pelo array rf._inconsistencias[] em t-creditos, modal NF e timeline do modal RF.', commit:'253de3a' },
+      { modulo:'Listagens RF', tipo:'feat', title:'Coluna Inconsistências em todas as listagens de DF e RF', desc:'Negócio: operador visualiza diretamente nas listagens quais tipos de inconsistência incidem sobre cada documento ou registro fiscal, sem precisar abrir o detalhe. Exibe todos os tipos ativos (ex: "Valor IBS divergente · Split CBS não executado"). Técnico: coluna adicionada em creditosDFsRender, debitosDFsRender, renderizarTabelaCreditos, renderizarTabelaDebitos e renderizarTabelaPagamentos lendo _inconsistencias[].', commit:'7b48f41' },
+      { modulo:'Listagens RF', tipo:'feat', title:'RF Core padronizado — mesmas colunas e filtros em todas as listagens de RF', desc:'Negócio: qualquer listagem que exibe registros fiscais (créditos, débitos, pagamentos RAD, inconsistências, portal do fornecedor) passa a ter o mesmo conjunto de informações: ID RF, Tipo Fiscal (IBS/CBS), DF Vinculado, Entidade, Data, Valor do Tributo, Status do Crédito, Status de Registro, Método de Pagamento e Extinção. Filtros disponíveis para todos os campos. Técnico: padronização de thead, td e filtros em t-creditos, t-debitos, t-impostos, t-inc-rfs e forn-df-detail-rfs.', commit:'a72d8d8' },
+      { modulo:'Listagens DF', tipo:'refactor', title:'Remoção de "Status RF" das listagens de DF — eliminação de redundância', desc:'Negócio: o Status do Crédito é compartilhado entre DF e RF (o DF tem variantes parciais por ter dois RFs). Exibir "Status RF" separado numa listagem de DF era redundante e gerava confusão. A coluna de Status de Registro (flags de risco como Vencido, Em Risco, A Prescrever, Inconsistência) permanece e exibe todas as flags concorrentes do DF. Técnico: remoção de filtStRF, <th> e <td> em creditosDFsRender e debitosDFsRender.', commit:'7b48f41' },
+      { modulo:'Dados / Mock', tipo:'data', title:'Regras de negócio RAD+comprovante aplicadas nos Registros Fiscais', desc:'Negócio: contratos com modelo RAD (adquirente recolhe o tributo) exigem comprovante de pagamento para que o crédito seja considerado apropriado. RFs de entrada com RAD e sem comprovante geram inconsistência "Sem Comprovante". RFs com RAD e comprovante têm dataPagamento preenchida. RFs utilizados registram metodoExtincao "Compensacao". Mesmas regras aplicadas a RFs de saída (extinto via RAD → dataPagamento; inconsistencia via RAD → "Sem Comprovante"). Técnico: mock de nfsEntradas e saídas reestruturado em data-sync-fixed.js.', commit:'8d7d37e' },
+      { modulo:'Dashboard', tipo:'fix', title:'KPIs e gráficos do dashboard derivados dinamicamente dos dados reais', desc:'Negócio: os indicadores de crédito (Apropriado, A Apropriar, Em Risco) e os gráficos de evolução agora refletem os dados reais filtrados pelo grupo econômico selecionado, sem valores fixos. Qualquer mudança nos dados ou filtros propaga imediatamente para o dashboard. Técnico: buildCharts() delegado para atualizarDashboard(); dashRenderCreditKPIs() reescrito para iterar nfListaFiltradaGlobal com filtro de CNPJ.', commit:'7238e3e' },
+      { modulo:'Créditos IBS/CBS', tipo:'ux', title:'Módulo Créditos — nova disposição dos painéis analíticos (Proposta B)', desc:'Negócio: reorganização dos gráficos para priorizar a visão de risco (extintos + vencidos + ageing em destaque no topo), calendário de vencimento e créditos a vencer logo abaixo, e composição + método de extinção em formato comparativo. Top 5 e Top 10 fornecedores em grade lado a lado. Técnico: reestruturação de grid CSS com slots 3-col, 2-col, 2fr/1fr e 2-col.', commit:'2b47bf3' },
+    ]
+  },
+  {
+    version: '0.18.0',
+    date: '20/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Dados / Mock', tipo:'data', title:'Flags de risco simultâneas — um RF pode ser Vencido E ter Inconsistência', desc:'Negócio: um RF de crédito pode acumular múltiplas condições de risco ao mesmo tempo (ex: crédito vencido que também tem comprovante divergente). Todas as flags ativas são exibidas em conjunto nas listagens. A flag de maior severidade determina o statusRegistro (inconsistência > vencido > em risco > a prescrever). Flags de risco aplicam-se exclusivamente a RFs de entrada; RFs de saída não recebem flags. Técnico: statusFlags substituiu statusRegistro singular; _calcularStatusRegistro() centraliza o cálculo.', commit:'c027050' },
+      { modulo:'Portal Fornecedor', tipo:'feat', title:'Portal Fornecedor completo — grupo econômico, comprovantes, contestação e contratos', desc:'Negócio: fornecedor acessa seus próprios DFs filtrados por CNPJ, visualiza o status de cada imposto (IBS/CBS) separadamente, envia comprovante de pagamento RAD/PIX, contesta DFs vencidos e consulta contratos vigentes. Visão de grupo econômico com matriz e filiais. Técnico: período global multi-select; DFs derivados de nfListaFiltradaGlobal filtrados por CNPJ; modais de comprovante, contestação e chat adquirente.', commit:'878fe95' },
+      { modulo:'FCT', tipo:'feat', title:'Forecast de Fluxo Fiscal e de Aproveitamento de Crédito', desc:'Negócio: o módulo FCT projeta o fluxo futuro de entradas (IBS+CBS) e saídas tributárias com média móvel, separando o que já ocorreu do que é projeção. O Forecast de Aproveitamento estima quando os créditos a apropriar serão utilizados. Insights automáticos identificam o melhor mês histórico, tendência e perda projetada por não-aproveitamento. Técnico: Chart.js com datasets de realizado/forecast; corte na data atual; retry para renderização assíncrona.', commit:'7e5e573' },
+      { modulo:'Inteligência', tipo:'feat', title:'Score de risco por fornecedor com ranking dual e mapa de bolhas', desc:'Negócio: cada fornecedor recebe score de conformidade (0–100) baseado em créditos em risco sobre total. Score ≥ 70 indica baixo risco (verde). Ranking Top 5 Melhores e Top 5 Piores permite priorização de ações. Mapa de risco inclui todos os fornecedores com posicionamento por volume vs. risco. Técnico: score calculado a partir de nfListaFiltradaGlobal; mapa com anti-sobreposição de bolhas.', commit:'a87fc65' },
+      { modulo:'Dashboard', tipo:'ux', title:'Redesign do dashboard — cockpit compacto com informação de alto valor no topo', desc:'Negócio: reorganização para que o operador veja imediatamente os KPIs críticos (créditos totais, em risco, inconsistências) e o forecast de fluxo fiscal antes de qualquer detalhe. Remoção da tabela de últimas transações (redundante com listagens). Técnico: grid 3 colunas, hero reduzido, barras empilhadas em Evolução de Créditos, Forecast FCT como primeiro gráfico.', commit:'68a1462' },
+      { modulo:'Inconsistências', tipo:'feat', title:'Diagnóstico guiado por árvore de decisão', desc:'Negócio: operador sem expertise fiscal consegue identificar o tipo de inconsistência respondendo a perguntas em sequência (fluxo de entrada ou saída? etapa de apuração ou financeira? qual imposto?). Gráficos de inconsistência passam a usar o valor do tributo IBS+CBS (não o valor bruto da NF), refletindo o impacto fiscal real. Técnico: assistente implementado como máquina de estados com árvore de perguntas e respostas.', commit:'d4cd5c5' },
+      { modulo:'Pagamentos', tipo:'feat', title:'Módulo Pagamentos — St. Crédito, St. Registro e St. Pagamento como colunas independentes', desc:'Negócio: separação explícita entre o estágio do crédito (nao_apropriado/apropriado/utilizado/glosado), o risco do registro (vencido/em_risco/inconsistência) e o status de pagamento da guia RAD (pago/pendente). Permite identificar, por exemplo, créditos já pagos pelo RAD mas ainda com inconsistência na conciliação. Técnico: três colunas de estado independentes em renderizarTabelaPagamentos.', commit:'a34ab6d' },
+    ]
+  },
+  {
+    version: '0.17.0',
+    date: '19/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Filtros', tipo:'feat', title:'Painel de filtros colapsável padronizado em todos os módulos', desc:'Negócio: operador filtra qualquer listagem (créditos, débitos, pagamentos, inconsistências, contratos, fornecedores, organização) pelo mesmo padrão visual — campo de busca + botão de filtros avançados colapsável. Todas as colunas exibidas têm filtro correspondente. Técnico: shBuildFilterPanel gera painéis de filtro dinamicamente com seletores de status, datas, ranges numéricos e contratos.', commit:'709a0f2' },
+      { modulo:'Inconsistências', tipo:'feat', title:'Inconsistências geradas por imposto separado — taxonomia CAPUR/CFIN', desc:'Negócio: inconsistências de apuração e financeiras são identificadas por imposto (IBS ou CBS) de forma independente. Ex: uma NF pode ter "Valor IBS divergente da apuração" sem nenhuma inconsistência de CBS. A taxonomia agora cobre CAPUR (valor, alíquota, prazo) e CFIN (split não executado, comprovante divergente) para cada imposto individualmente. Técnico: _construirInconsistenciasGlobal gera cards por rfId (IBS ou CBS) com tipo granular.', commit:'f036e08' },
+      { modulo:'Créditos IBS/CBS', tipo:'feat', title:'Créditos A Apropriar separados por Curto Prazo (≤30 dias) e Longo Prazo', desc:'Negócio: créditos não apropriados são classificados pelo prazo até o vencimento (último dia do mês seguinte à emissão do DF). Curto Prazo (≤30 dias) requer ação imediata. Longo Prazo pode aguardar. DFs já vencidos excluídos dessas categorias e exibidos como "Vencidos". KPIs e listagens sincronizados com o filtro de período ativo. Técnico: classificação por mês de vencimento real (new Date(y, m, 0)), não por dias corridos.', commit:'48733f3' },
+      { modulo:'Conciliação', tipo:'data', title:'Vocabulário unificado — "Inconsistência" como status único de falha em CAPUR e CFIN', desc:'Negócio: eliminação da ambiguidade entre "divergente" e "inconsistência". Qualquer falha de conciliação — seja de valor, alíquota, prazo ou comprovante — é chamada de "Inconsistência" em toda a interface. Técnico: status "divergente" renomeado para "inconsistencia" na máquina de estados de CAPUR e CFIN; todos os filtros, labels e gráficos atualizados.', commit:'52ce1ce' },
+      { modulo:'FCT', tipo:'feat', title:'Forecasts de Fluxo Fiscal e Aproveitamento como primeira visão do módulo FCT', desc:'Negócio: o módulo de Fluxo de Caixa Tributário passa a abrir com as projeções em destaque, posicionando o planejamento tributário como ponto de entrada. Insights automáticos (melhor mês, tendência, perda projetada) aparecem abaixo dos gráficos. Técnico: reordenação de views no módulo FCT; tabela mensal de aproveitamento adicionada.', commit:'5980824' },
+      { modulo:'PRDs', tipo:'feat', title:'PRDs de Organização, Fornecedor e Contratos v1.0; Ingestão v1.8', desc:'Negócio: documentação de requisitos formais publicada para os módulos de Organização (hierarquia CNPJ), Fornecedor (cadastro e auditoria) e Contratos (modelo de operação RAD/Fornecedor). Ingestão v1.8 reconcilia a implementação com as nomenclaturas finais do PRD. Técnico: hub de PRDs atualizado com links e versões.', commit:'e43dcae' },
+    ]
+  },
+  {
+    version: '0.16.0',
+    date: '18/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Créditos IBS/CBS', tipo:'feat', title:'Calendário de créditos a vencer — visão diária com drill-down por DFs', desc:'Negócio: operador visualiza quais dias do mês têm créditos vencendo, com intensidade do heatmap proporcional ao volume. Clique em qualquer dia abre a lista de DFs cujo vencimento cai naquela data, permitindo ação imediata sobre os documentos em risco. Navegação mês a mês. Técnico: calendário heatmap gerado por SVG em tons teal; dados derivados de nfListaFiltradaGlobal com data de vencimento = último dia do mês seguinte à emissão.', commit:'8708a4e' },
+      { modulo:'Créditos IBS/CBS', tipo:'feat', title:'Método de extinção do crédito — Split Payment, Compensação, Ressarcimento, Transferência', desc:'Negócio: quando um crédito IBS/CBS é utilizado para extinguir um débito, o método de extinção fica visível na listagem do DF e do RF, no modal de detalhe e na timeline de auditoria. Os 4 métodos previstos na LC 214/2025 são suportados. Técnico: campo metodoExtincao no objeto RF; badge colorido por método nas renderizações.', commit:'88169cf' },
+      { modulo:'Débitos IBS/CBS', tipo:'feat', title:'Módulo Débitos com visão separada por Documentos Fiscais e Registros Fiscais', desc:'Negócio: débitos de saída podem ser analisados em dois níveis — por DF (visão agregada IBS+CBS do documento) ou por RF (granularidade por imposto). Status de extinção do DF derivado dos dois RFs com regra de prioridade explícita: inconsistência > vencido > extinto > não extinto. Técnico: três abas (Visão Geral, Registros Fiscais, Documentos Fiscais) com filtros independentes.', commit:'ce2ebe2' },
+      { modulo:'Inconsistências', tipo:'feat', title:'Kanban de inconsistências com responsável e histórico de alterações', desc:'Negócio: cada card de inconsistência pode ser atribuído a um responsável e movido entre status (Aberta → Em Análise → Ag. Emitente → Resolvida / Glosada) com registro de histórico. Modal expandido em dois painéis: dados e ações sugeridas à esquerda, histórico completo à direita. Técnico: _kanbanState persiste status por incId; filtros multiselect por tipo e DF.', commit:'3f0e3a5' },
+      { modulo:'Autenticação', tipo:'feat', title:'Tela de login com seletor de perfil Cliente / Fornecedor', desc:'Negócio: acesso à plataforma controlado por login (credencial Admin/Positivo123@). Após autenticação, usuário escolhe o perfil — Cliente (adquirente, visão completa) ou Fornecedor (portal restrito ao próprio CNPJ). Perfil pode ser alterado no card do usuário ou no modal de configurações. Técnico: autenticação client-side com sessionStorage; toggle de perfil vinculado ao roteamento de views.', commit:'f76aa90' },
+      { modulo:'Dados / Mock', tipo:'data', title:'Anonimização de razões sociais e CNPJs com dados fictícios realistas', desc:'Negócio: todos os nomes de fornecedores, clientes e emitentes substituídos por razões sociais fictícias geradas deterministicamente (ex: "Induspar Componentes Ltda", "Metalúrgica Sulamérica S.A."). CNPJs formatados no padrão XX.XXX.XXX/XXXX-XX. Dados consistentes entre sessões. Técnico: seed determinístico por índice garante que o mesmo fornecedor recebe sempre o mesmo nome fictício.', commit:'fa219b1' },
+    ]
+  },
+  {
+    version: '0.15.0',
+    date: '14/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Filtros', tipo:'feat', title:'Seletor de período por meses individuais em todos os módulos', desc:'Negócio: operador seleciona um ou mais meses específicos (ex: Jan, Fev, Mar/2026) em vez de intervalos de data. O filtro propaga para Dashboard, Créditos, Débitos, Pagamentos e Inconsistências simultaneamente. Técnico: componente multi-select de períodos substituindo inputs de data-de/data-até; sincronização via _aplicarFiltroPeriodo global.', commit:'ffbb39e' },
+      { modulo:'Filtros', tipo:'feat', title:'Filtro de Grupo Econômico no header — todos os módulos sincronizados', desc:'Negócio: ao selecionar um CNPJ do grupo econômico no header, todos os módulos passam a exibir apenas dados relacionados àquela empresa, sem necessidade de reconfigurar filtros individuais por módulo. Técnico: seletor GE chama _aplicarFiltroCnpjEmpresa que recalcula nfListaFiltradaGlobal e dispara sincronizarTudo().', commit:'d7eb910' },
+      { modulo:'Fornecedores', tipo:'feat', title:'Edição de fornecedor com auditoria de alterações e suporte a multi-contratos', desc:'Negócio: qualquer alteração no cadastro de fornecedor (razão social, CNPJ, contatos) fica registrada na trilha de auditoria com usuário, data e valor anterior. Fornecedores com mais de um contrato simultâneo (ex: diferentes prazos por tipo de produto) são suportados pelo campo Multi-contratos. Técnico: modal de edição com histórico de alterações append-only.', commit:'609c2a6' },
+      { modulo:'Organização', tipo:'feat', title:'Módulo Organização com Apuração Assistida na sidebar', desc:'Negócio: detalhes da organização (CNPJs ativos, hierarquia matriz/filial, status de conformidade) acessíveis em modal com trilha de auditoria. Apuração Assistida do Governo exibida na sidebar para consulta rápida sem sair do contexto atual. ESC fecha qualquer modal aberto. Técnico: AA sincronizada via _postProcessarDados; overlay com z-index gerenciado globalmente.', commit:'2e2ff06' },
+    ]
+  },
+  {
+    version: '0.14.0',
+    date: '13/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Design System', tipo:'feat', title:'Design System completo — tema claro, sidebar teal, tokens globais', desc:'Negócio: identidade visual consolidada com tema claro como padrão (fundo #F5F7FA, cards brancos), sidebar em verde teal da marca, header com título dinâmico por módulo. Consistência visual em toda a plataforma. Técnico: tokens CSS globais (--bg, --surface, --teal, --blue etc.) e PALETTE JS; cores inline eliminadas; fonte Inter aplicada globalmente via Chart.js default; tema escuro mantido via prefers-color-scheme.', commit:'ec72309' },
+      { modulo:'Sidebar', tipo:'feat', title:'Sidebar colapsável com estado persistido entre sessões', desc:'Negócio: em telas menores ou para aumentar a área útil, o operador colapsa a sidebar mantendo apenas os ícones com tooltips. O estado (expandida/colapsada) é lembrado entre sessões. Técnico: toggle 56px com transição CSS suave; labels em <span> ocultos via max-width; estado em localStorage.', commit:'bb9028a' },
+      { modulo:'Ingestão de DF', tipo:'feat', title:'Upload de DFs via CSV com pré-visualização antes de importar', desc:'Negócio: operador carrega um arquivo CSV com NFs (NF-e, CT-e, NFS-e, entradas e saídas) e visualiza uma prévia da tabela antes de confirmar a importação. Campos validados: layout, validade do documento e dados cadastrais. Status final: Importado (sucesso) ou Inconsistência (falha). Técnico: parser CSV posicional com suporte a semicolon; pré-visualização via render inline; validação binária aprovado/falha.', commit:'556143b' },
+      { modulo:'Portal Fornecedor', tipo:'feat', title:'Portal Fornecedor — visão do ciclo de vida de créditos pelo fornecedor', desc:'Negócio: fornecedor acessa seus documentos fiscais, visualiza status de cada RF (IBS e CBS separados), liquida pendências, contesta divergências, envia comprovante de pagamento RAD e acompanha seu score de conformidade. Separação clara entre a visão do adquirente (portal cliente) e a do fornecedor. Técnico: view independente com seletor de perfil; dados filtrados por CNPJ do fornecedor em nfListaFiltradaGlobal.', commit:'9f87e33' },
+      { modulo:'PRDs', tipo:'feat', title:'PRD Conciliação v1.0 criado; Ingestão v1.7 publicado', desc:'Negócio: requisitos formais do módulo de Conciliação documentados — modelo CAPUR (apuração) e CFIN (financeira), fluxo de status e critérios de divergência. Ingestão v1.7 atualizado com status simplificado (importado/inconsistência), coluna de tipo de inconsistência e upload CSV posicional. Hub de PRDs centraliza todos os documentos com versão e status. Técnico: documentos em HTML estático no hub de PRDs.', commit:'121d611' },
+    ]
+  },
+  {
+    version: '0.13.0',
+    date: '12/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Conciliação', tipo:'data', title:'Conciliação de Apuração (CAPUR) e Financeira (CFIN) como operações distintas', desc:'Dois registros de conciliação independentes: CAPUR- para confronto de valores vs. Apuração Assistida Gov (timestamp de geração imediata), e CFIN- para avaliação da liquidação financeira (~15 dias depois). Cada um com ID próprio, timestamp e status independentes.', commit:'9735d1f' },
+      { modulo:'Histórico & Auditoria', tipo:'feat', title:'Eventos CONC APURAÇÃO e CONC FINANCEIRA na trilha de auditoria do DF e dos RFs', desc:'A trilha de auditoria emite dois eventos distintos para as conciliações. Ambos aparecem no histórico do DF e dos RFs vinculados, em ordem cronológica decrescente. Pré-gerados na inicialização para disponibilidade imediata.', commit:'9735d1f' },
+      { modulo:'Ingestão de DF', tipo:'feat', title:'Coluna Número DF na tabela de ingestão', desc:'Número do DF exibido como link clicável na listagem, abrindo o overlay de detalhe do DF no módulo de Conciliação.', commit:'0affe51' },
+      { modulo:'Histórico & Auditoria', tipo:'feat', title:'Evento UTILIZAÇÃO exibe valor abatido e DFs de saída envolvidos', desc:'No evento de utilização do crédito, a trilha agora detalha o valor abatido (rf.valor) e quais DFs de saída foram envolvidos no abatimento, com valor fracionado por DF.', commit:'0affe51' },
+      { modulo:'Ingestão de DF', tipo:'rem', title:'Removidas validações "Validade do certificado" e "CFOP compatível com operação"', desc:'Validade do certificado é verificada implicitamente pela SEFAZ antes da autorização. CFOP × NCM requer mapeamento completo previsto para v2.', commit:'c2b975b' },
+    ]
+  },
+  {
+    version: '0.12.0',
+    date: '11/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Histórico & Auditoria', tipo:'feat', title:'Trilha de auditoria completa no modal de detalhe do DF (Ingestão)', desc:'Modal de detalhe expandido para 900 px com layout de dois painéis: dados + validações à esquerda, trilha de auditoria completa do DF e de todos os seus RFs à direita.', commit:'f92c86f' },
+      { modulo:'Conciliação', tipo:'feat', title:'Botão "Ver DF" na tabela de conciliação', desc:'Cada linha da conciliação ganhou botão que abre o detalhe do DF correspondente, permitindo navegar do contexto de conciliação para o ciclo completo do documento.', commit:'f92c86f' },
+      { modulo:'Conciliação', tipo:'data', title:'Registro de conciliação com hash ID, timestamp e status', desc:'Cada operação de conciliação gera um registro com ID hash único (CONC-), timestamp ISO e status (confirmada/divergente/pendente), vinculado ao NF e seus RFs.', commit:'f92c86f' },
+      { modulo:'Ingestão de DF', tipo:'feat', title:'Número da DF visível na listagem de ingestão', desc:'Campo nfNumero adicionado ao modelo de dados de ingestão e renderizado como coluna na tabela, vinculado ao registro global da NF.', commit:'f92c86f' },
+    ]
+  },
+  {
+    version: '0.11.0',
+    date: '10/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Histórico & Auditoria', tipo:'ux', title:'Timestamps completos nos históricos (DD/MM/YYYY HH:MM)', desc:'Todos os eventos de histórico de DF e RF agora exibem timestamp com data e hora, não apenas data. Formatação via _rfFmtTS(). Ordenação dos históricos invertida para decrescente (mais recente primeiro).', commit:'15393ad' },
+      { modulo:'Créditos IBS/CBS', tipo:'feat', title:'Campo Método de Extinção do crédito na listagem', desc:'Badge colorido por método (Split Payment, Compensação, Ressarcimento, Transferência) exibido na coluna de créditos com status "utilizado".', commit:'23324de' },
+      { modulo:'Créditos IBS/CBS', tipo:'ux', title:'Tooltip detalhando os 4 métodos de extinção do crédito', desc:'Popover no cabeçalho da coluna "Método de Extinção" explicando Split Payment, Compensação, Ressarcimento e Transferência conforme LC 214/2025.', commit:'8f16886' },
+    ]
+  },
+  {
+    version: '0.10.0',
+    date: '09/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Dashboard', tipo:'rem', title:'Remoção do tip do gráfico de Alíquota Efetiva', desc:'Ícone de informação (i) retirado da seção de alíquota efetiva no dashboard.', commit:'e3a067b' },
+      { modulo:'Contratos', tipo:'rem', title:'Remoção do campo RAD do formulário de contrato', desc:'Campo "Pagamento via RAD?" removido — o valor rad é derivado automaticamente do campo Modelo de operação.', commit:'863bb49' },
+    ]
+  },
+  {
+    version: '0.9.0',
+    date: '08/08/2026',
+    current: false,
+    changes: [
+      { modulo:'Contratos', tipo:'feat', title:'Contratos como artefato global (window.contratosGlobal)', desc:'Contratos expostos globalmente via window.contratosGlobal com API pública getContratoAtivo(cnpj, dataISO) e getContratosPorCnpj(cnpj). Todos os módulos acessam contratos pela mesma fonte de verdade.', commit:'7ca6a3b' },
+      { modulo:'Contratos', tipo:'feat', title:'Campo Modelo de operação no formulário de contrato', desc:'Select com duas opções: "Fornecedor realiza o recolhimento" e "Adquirente realiza o recolhimento". Inclui tooltip explicativo sobre responsabilidade tributária. O campo RAD é derivado automaticamente.', commit:'7ca6a3b' },
+      { modulo:'Contratos', tipo:'ux', title:'Prazo de pagamento substituído por slider de 1–360 dias', desc:'O select de prazo foi substituído por uma barra deslizante com faixa de 1 a 360 dias, com exibição do valor selecionado em tempo real.', commit:'7ca6a3b' },
+    ]
+  },
+];
+
+// ── Renderização ─────────────────────────────────────────────────────
+var _filtroModulo = '';
+var _filtroTipo   = '';
+
+function filtrar(campo, valor) {
+  if (campo === 'modulo') { _filtroModulo = valor; _filtroTipo = ''; }
+  else                    { _filtroTipo = valor;   _filtroModulo = ''; }
+
+  // Atualizar botões
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
+
+  render();
+}
+
+function render() {
+  var root = document.getElementById('changelog-root');
+  var html = '';
+
+  var totalChanges = 0, totalFeat = 0, totalUX = 0, totalRem = 0, totalData = 0;
+
+  CHANGELOG.forEach(function(ver) {
+    var filtered = ver.changes.filter(function(c) {
+      if (_filtroModulo && c.modulo !== _filtroModulo) return false;
+      if (_filtroTipo   && c.tipo  !== _filtroTipo)   return false;
+      return true;
+    });
+
+    totalChanges += filtered.length;
+    filtered.forEach(function(c) {
+      if (c.tipo === 'feat') totalFeat++;
+      if (c.tipo === 'ux')   totalUX++;
+      if (c.tipo === 'rem')  totalRem++;
+      if (c.tipo === 'data') totalData++;
+    });
+
+    if (!filtered.length) return;
+
+    html += '<div class="version-block">';
+    html += '<div class="version-hdr">';
+    html += '<span class="version-tag">' + ver.version + '</span>';
+    html += '<span class="version-date">' + ver.date + '</span>';
+    if (ver.current) html += '<span class="version-label vl-current">Atual</span>';
+    html += '<span style="margin-left:auto;font-size:.75rem;color:var(--txt3)">' + filtered.length + ' alteraç' + (filtered.length === 1 ? 'ão' : 'ões') + '</span>';
+    html += '</div>';
+
+    // Agrupar por módulo
+    var byMod = {};
+    filtered.forEach(function(c) {
+      if (!byMod[c.modulo]) byMod[c.modulo] = [];
+      byMod[c.modulo].push(c);
+    });
+
+    var modColors = {
+      'Contratos':           { dot:'#4D9FFF', label:'var(--blue)' },
+      'Ingestão de DF':      { dot:'#1FBAAA', label:'var(--teal)' },
+      'Créditos IBS/CBS':    { dot:'#22C55E', label:'var(--green)' },
+      'Conciliação':         { dot:'#F59E0B', label:'var(--amber)' },
+      'Histórico & Auditoria':{ dot:'#A78BFA', label:'var(--purple)' },
+      'Dashboard':           { dot:'#F04B5C', label:'var(--red)' },
+    };
+
+    Object.keys(byMod).forEach(function(mod) {
+      var mc = modColors[mod] || { dot:'#8A99B4', label:'var(--txt2)' };
+      var items = byMod[mod];
+      html += '<div class="module-section">';
+      html += '<div class="module-hdr">';
+      html += '<span class="module-dot" style="background:' + mc.dot + '"></span>';
+      html += '<span class="module-name" style="color:' + mc.label + '">' + mod + '</span>';
+      html += '<span class="module-count">' + items.length + '</span>';
+      html += '</div>';
+      html += '<div class="change-list">';
+
+      items.forEach(function(c) {
+        var typeMap = { feat:'feat', fix:'fix', ux:'ux', data:'data', rem:'rem' };
+        var typeLbl = { feat:'Feat', fix:'Fix', ux:'UX', data:'Dados', rem:'Removido' };
+        html += '<div class="change-item">';
+        html += '<span class="change-type ct-' + (typeMap[c.tipo]||'feat') + '">' + (typeLbl[c.tipo]||c.tipo) + '</span>';
+        html += '<div class="change-body">';
+        html += '<div class="change-title">' + c.title + '</div>';
+        if (c.desc) html += '<div class="change-desc">' + c.desc + '</div>';
+        if (c.commit) html += '<div class="change-commit">commit: ' + c.commit + '</div>';
+        html += '</div>';
+        html += '</div>';
+      });
+
+      html += '</div></div>';
+    });
+
+    html += '</div>';
+  });
+
+  if (!html) {
+    html = '<div class="no-results">Nenhuma alteração encontrada para os filtros selecionados.</div>';
+  }
+
+  root.innerHTML = html;
+
+  // Atualizar stats
+  document.getElementById('s-total').textContent = totalChanges;
+  document.getElementById('s-feat').textContent  = totalFeat;
+  document.getElementById('s-ux').textContent    = totalUX;
+  document.getElementById('s-rem').textContent   = totalRem;
+  document.getElementById('s-data').textContent  = totalData;
+}
+
+render();
+</script>
+</body>
+</html>
